@@ -1,0 +1,114 @@
+body {
+  background-color: #2b0000;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar{
+    background-color:#400000;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 24px
+}
+.navbar-logo{
+    display:flex;
+    width: 50px; 
+    height: 50px;
+}
+/* .navbar-nome{color:var(--accent);font-weight:700;font-size:1.25rem} */
+.navbar-links{
+    display:flex;
+    gap:20px
+}
+
+.navbar-links a:hover{
+    color:var(--accent)
+}
+
+.navbar-actions{
+    display:flex;
+    align-items:center;
+    gap:10px
+}
+
+.navbar select{
+    background:transparent;
+    border:1px solid var(--accent);
+    color:white;
+    padding:6px 8px;
+    border-radius:6px
+}
+
+.navbar button{
+    background-color:#d62828;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:700
+}
+
+.navbar button:hover{background-color:#b71c1c}
+
+
+.pedidos-container {
+  padding: 30px 40px;
+}
+
+.pedidos-title {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.usuario {
+  font-size: 18px;
+  margin: 15px 0 30px;
+}
+
+.pedido-box {
+  background-color: #fff;
+  color: #000;
+  margin-bottom: 40px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.pedido-numero {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #2b0000;
+  font-weight: bold;
+}
+
+.tabela-pedido {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.tabela-pedido th {
+  background-color: #b28a2e;
+  color: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.tabela-pedido td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.pedido-box table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.pedido-box table tr:nth-child(odd) {
+  background-color: #ffffff;
+}

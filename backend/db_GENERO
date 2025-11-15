@@ -1,0 +1,75 @@
+require("dotenv").config();
+const mssql = require("mssql");
+
+// Configuração do BD
+const config = {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_SERVER,
+  database: process.env.DB_DATABASE,
+  options: { trustServerCertificate: true },
+};
+
+// Função de conexão
+async function conectaBD() {
+  try {
+    await mssql.connect(config);
+    console.log("  Conectado ao SQL Server (GENERO)!");
+  } catch (error) {
+    console.log(" Erro na conexão com o BD:", error);
+  }
+}
+
+conectaBD();
+
+/**** Funções para manipular dados da tabela GENERO ****/
+
+// Mostrar todos os gêneros cadastrados
+async function selecionaTodosGenero() {
+  const resultados = await mssql.query("SELECT * FROM GENERO");
+  console.log(" Dados da Tabela GENERO:");
+  console.log(resultados.recordset);
+  return resultados.recordset;
+}
+
+// Mostrar um gênero específico
+async function listaGeneroEspecifico(id) {
+  const resultados = await mssql.query(`SELECT * FROM GENERO WHERE ID = ${id}`);
+  console.log(" Dados do Gênero ID:", id);
+  console.log(resultados.recordset);
+  return resultados.recordset;
+}
+
+// Inserir novo gênero
+async function insereGenero(genero) {
+  const query = `
+    INSERT INTO GENERO (descricao)
+    VALUES ('${genero.descricao}')
+  `;
+  await mssql.query(query);
+  console.log(" Gênero inserido com sucesso!");
+}
+
+// Atualizar gênero existente
+async function atualizaGenero(id, genero) {
+  const query = `
+    UPDATE GENERO SET 
+      descricao='${genero.descricao}'
+    WHERE ID=${id}
+  `;
+  await mssql.query(query);
+  console.log(`Gênero ${id} atualizado com sucesso!` );
+}
+
+// Deletar gênero por ID
+async function apagaGenero(id) {
+  await mssql.query(`DELETE FROM GENERO WHERE ID = ${id}`);
+  console.log(`Gênero ${id} deletado com sucesso!` );
+}
+
+
+module.exports = {
+  selecionaTodosGenero,
+  listaGeneroEspecifico,
+  insereGenero,
+};
