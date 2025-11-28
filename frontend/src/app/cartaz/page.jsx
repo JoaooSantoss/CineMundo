@@ -10,9 +10,8 @@ export default function Cartaz() {
   useEffect(() => {
     async function carregarFilmes() {
       try {
-        const res = await fetch("http://localhost:3001/filmes");
+        const res = await fetch("http://localhost:3001/Filmes"); // <-- API CORRETA (com F maiúsculo?)
 
-        // Verificar erro antes de converter JSON
         if (!res.ok) {
           throw new Error("Erro na resposta da API");
         }
@@ -29,6 +28,7 @@ export default function Cartaz() {
         }));
 
         setMovies(filmesFormatados);
+
       } catch (err) {
         console.error("Erro ao carregar filmes:", err);
       }
@@ -40,11 +40,14 @@ export default function Cartaz() {
   return (
     <main>
       <Navbar />
+
       <div className="top-buttons">
-      <button className="btn-comprar">🛒 Comprar Ingressos</button>
+        <button className="btn-comprar">🛒 Comprar Ingressos</button>
       </div>
+
       <div className="container">
         <h1 className="titulo">🎬 Vitrine de Filmes</h1>
+
         <div className="grid">
           {movies.map((movie) => (
             <div key={movie.id} className="filme-card">
@@ -58,6 +61,7 @@ export default function Cartaz() {
             </div>
           ))}
         </div>
+        
       </div>
     </main>
   );

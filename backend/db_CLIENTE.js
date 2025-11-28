@@ -42,19 +42,82 @@ async function consultaClienteEspecifico(id) {
 
 // Inserir novo cliente
 async function inserirCliente(cliente) {
-  const query = `
-    INSERT INTO CLIENTE (
-      cpf, nome_completo, data_aniversario, endereco_completo, 
-      celular, email, senha, paga_meia_entrada
-    ) VALUES (
-      '${cliente.cpf}', '${cliente.nome_completo}', '${cliente.data_aniversario}', 
-      '${cliente.endereco_completo}', '${cliente.celular}', '${cliente.email}', 
-      '${cliente.senha}', '${cliente.paga_meia_entrada}'
-    )
-  `;
-  await mssql.query(query);
-  console.log(" Cliente inserido com sucesso!");
+    // 1. Validação básica de campos obrigatórios
+    if (!cliente.cpf || !cliente.email || !cliente.senha || !cliente.nome_completo) {
+        return { erro: "Campos obrigatórios faltando (cpf, email, senha, nome_completo)" };
+    }
+
+    try {
+        const request = new mssql.Request();
+
+        // 2. Preparando os inputs (Proteção contra SQL Injection)
+        request.input('cpf', mssql.VarChar, cliente.cpf);
+        request.input('nome', mssql.VarChar, cliente.nome_completo);
+        
+        // Se vier data, usa. Se não, manda null (o banco decide ou fica null)
+        request.input('niver', mssql.Date, cliente.data_aniversario || null);
+        
+        request.input('endereco', mssql.VarChar, cliente.endereco_completo || null);
+        request.input('celular', mssql.VarChar, cliente.celular || null);
+        request.input('email', mssql.VarChar, cliente.email);
+        request.input('senha', mssql.VarChar, cliente.senha);
+        
+        // SQL Server usa BIT (0 ou 1). Convertemos true/false para 1/0
+        const meiaEntrada = cliente.paga_meia_entrada ? 1 : 0;
+        request.input('meia', mssql.Bit, meiaEntrada);
+
+        // 3. A Query Segura
+        const query = `
+            INSERT INTO CLIENTE (
+                cpf, nome_completo, data_aniversario, endereco_completo, 
+                celular, email, senha, paga_meia_entrada
+            ) VALUES (
+                @cpf, @nome, @niver, @endereco, 
+                @celular, @email, @senha, @meia
+            )
+        `;
+
+        await request.query(query);
+        console.log(`✅ Cliente inserido: ${cliente.nome_completo}`);
+        
+        return { sucesso: true };
+
+    } catch (erro) {
+        // Captura erro de CPF ou Email duplicado (Violação de chave única)
+        if (erro.number === 2627 || erro.number === 2601) {
+            console.error("⚠️ Tentativa de cadastro duplicado.");
+            return { erro: "CPF ou Email já cadastrados no sistema." };
+        }
+
+        console.error("❌ Erro ao inserir cliente:", erro);
+        return { erro: "Erro interno ao cadastrar cliente." };
+    }
 }
+
+// Verificar se cliente está cadastrado
+async function verificaLogin(email, senha) {
+  try {
+    const request = new mssql.Request();
+
+    request.input('emailUsuario', mssql.VarChar, email);
+    request.input('senhaUsuario', mssql.VarChar, senha);
+
+    const query = `
+      SELECT * FROM CLIENTE
+      WHERE email = @emailUsuario AND senha = @senhaUsuario
+    `;
+
+    const resultados = await request.query(query);
+
+    console.log(` Dados do CLIENTE: `);
+    console.log(resultados.recordset);
+    return resultados.recordset;
+  } catch (erro) {
+    console.error("Erro ao consultar cliente:", erro);
+    return [];
+  }
+}
+
 
 // Atualizar cliente existente
 async function atualizarCliente(id, cliente) {
@@ -83,6 +146,7 @@ async function deletarCliente(id) {
 module.exports = {
   consultaTodosOsClientes,
   consultaClienteEspecifico,
+  verificaLogin,
   inserirCliente,
   atualizarCliente,
   deletarCliente,

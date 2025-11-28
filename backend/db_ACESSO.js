@@ -41,27 +41,36 @@ async function listaAcessoEspecifico(id) {
 
 // Inserir novo acesso
 async function insereAcesso(acesso) {
-  if (!acesso.cliente_id || !acesso.data_acesso || !acesso.tipo_acesso) {
-    return { erro: "Campos obrigatórios ausentes (cliente_id, data_acesso, tipo_acesso)" };
+  if (!acesso.cliente_id) {
+      return { erro: "Campo obrigatório ausente: cliente_id" };
   }
 
   try {
-     const sql = `
-      INSERT INTO acessos (cliente_id, data_acesso, tipo_acesso)
-      VALUES (?, ?, ?)
-    `;
-    const valores = [acesso.cliente_id, acesso.data_acesso, acesso.tipo_acesso];
-    const [resultado] = await pool.execute(sql, valores);
+      const request = new mssql.Request();
+      
+      // --- AJUSTE DE HORA AQUI ---
+      const dataBrasil = new Date();
+      dataBrasil.setHours(dataBrasil.getHours() - 3);
 
-    return {
-      id: resultado.insertId,
-      ...acesso
-    };
+      const dataFinal = acesso.data_acesso || dataBrasil;
+
+      request.input('clienteId', mssql.Int, acesso.cliente_id);
+      request.input('dataAcesso', mssql.DateTime, acesso.data_acesso || dataBrasil);
+
+      const query = `
+          INSERT INTO ACESSO (cliente_id, data_hora)
+          VALUES (@clienteId, @dataAcesso)
+      `;
+      await request.query(query);
+
+      console.log(`✅ Acesso registrado. ID: ${acesso.cliente_id} | Data: ${dataFinal}`);
+      return { sucesso: true };
+
   } catch (erro) {
-    console.error("Erro ao inserir acesso:", erro);
-    return { erro: "Erro interno ao inserir acesso" };
+      console.error("❌ Erro ao inserir acesso:", erro);
+      return { erro: "Erro interno ao inserir acesso" };
   }
-  }
+}
 
 
 module.exports = {

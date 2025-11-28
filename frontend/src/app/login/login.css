@@ -1,0 +1,149 @@
+/* --- ESTILOS GLOBAIS OU RESET BÁSICO (adicione/verifique isto) --- */
+/* Isso garante que o HTML e o BODY ocupem 100% da tela */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Isso faz o body ocupar 100% da altura do html */
+    width: 100%;
+    overflow: hidden; /* Evita barras de rolagem indesejadas */
+}
+
+/* --- ESTILOS DO BACKGROUND (Ajustes de desfoque) --- */
+.background {
+    height: 100vh;
+    width: 100vw;
+    background-image: url('/background-login.png');
+    /* background-size: cover;  <-- Remova ou comente esta linha */
+    background-size: 89%; /* Tente 120% ou 130%. Isso "reduz" o zoom, mostrando mais da imagem */
+                               /* Se ainda estiver muito próximo, aumente este valor (ex: 150%) */
+    background-position: center; /* Mantém a imagem centralizada */
+    
+    /* ... o resto dos seus estilos ... */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Camada de sobreposição para escurecer e desfocar o fundo */
+.background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Escurece um pouco menos, se quiser */
+    backdrop-filter: blur(2px); /* REDUZIDO de 5px para 2px (menos desfoque) */
+    z-index: 1;
+}
+
+/* ... o resto do seu CSS .login-card e outros elementos ... */
+
+/* O Cartão de Login */
+.login-card {
+    position: relative;
+    z-index: 2;
+    /* background-color: rgba(25, 10, 10, 0.85); // CORRIGIR AQUI */
+    background-color: rgba(0, 0, 0, 0.4); /* Fundo preto mais transparente */
+    /* ou rgba(25, 10, 10, 0.4); se quiser manter o tom vinho */
+    
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 550px; /* AUMENTADO para 550px (mais horizontal) */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6); /* Sombra um pouco mais forte para destacar */
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.login-logo {
+    width: 100px; /* Ajuste o tamanho conforme seu logo */
+    margin-bottom: 20px;
+}
+
+.login-card h2 {
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* Grupos de Input (Label + Input) */
+.user-email, .senha {
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative; /* Necessário para o span "Mostrar/Ocultar" */
+}
+
+.user-email label, .senha label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.user-email input, .senha input {
+    width: 100%;
+    padding: 12px;
+    background-color: #333; /* Fundo do input escuro */
+    border: 1px solid #555;
+    border-radius: 4px;
+    color: white;
+    box-sizing: border-box; /* Importante! */
+}
+
+/* Span "Mostrar/Ocultar" */
+.senha span {
+    position: absolute;
+    right: 12px;
+    top: 40px; /* Ajuste fino para alinhar verticalmente */
+    color: #aaa;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+/* Botão de Login */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #e50914; /* Vermelho (cor do seu site) */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #f6121d;
+}
+
+/* ★★★ NOVO - Estilo para a mensagem da API ★★★ */
+.mensagem-api {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: rgba(229, 9, 20, 0.15); /* Fundo vermelho transparente */
+    border: 1px solid rgba(229, 9, 20, 0.5);
+    color: #ffbaba; /* Texto vermelho-claro */
+    border-radius: 4px;
+    font-size: 0.95em;
+    text-align: center;
+}
+
+/* Link de "Cadastre-se" */
+.login-links {
+    margin-top: 20px;
+}
+
+.login-links a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}

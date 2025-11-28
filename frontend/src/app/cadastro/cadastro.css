@@ -1,0 +1,176 @@
+/* src/app/cadastro/cadastro.css */
+
+.cadastro-background {
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100%;
+    
+    background-image: url('/background-login.png'); /* Verifique se a imagem está na pasta public */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Efeito parallax */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px 0;
+    margin: 0;
+}
+
+/* Camada escura */
+.cadastro-background::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+}
+
+.cadastro-card {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+}
+
+.cadastro-card h2 {
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    color: #ccc;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #e50914;
+    outline: none;
+}
+
+/* Mensagem de ajuda (ex: senha) */
+.input-help {
+    display: block;
+    text-align: left;
+    color: #aaa;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+/* Layout lado a lado */
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.col {
+    flex: 1;
+}
+
+/* Checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.checkbox-group input {
+    width: 20px;
+    height: 20px;
+    accent-color: #e50914;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Botão */
+.btn-cadastrar {
+    width: 100%;
+    padding: 14px;
+    background-color: #e50914;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-cadastrar:hover {
+    background-color: #f6121d;
+}
+
+/* Rodapé */
+.cadastro-footer {
+    margin-top: 25px;
+    font-size: 0.9rem;
+}
+
+.link-login {
+    color: white;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.link-login:hover {
+    text-decoration: underline;
+}
+
+/* Mensagem de Erro */
+.mensagem-erro {
+    color: #ffbaba;
+    background: rgba(229, 9, 20, 0.2);
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    border: 1px solid rgba(229, 9, 20, 0.5);
+}
+
+/* Responsividade (Celular) */
+@media (max-width: 768px) {
+    .cadastro-card {
+        width: 95%;
+        padding: 20px;
+    }
+    .cadastro-card h2 {
+        font-size: 1.5rem;
+    }
+    .row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

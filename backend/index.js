@@ -124,7 +124,6 @@ app.post("/Acessos", async (req, res) => {
 });
 
 
-
 // ========================
 // GENERO - ENDPOINTS
 // ========================
@@ -170,9 +169,55 @@ app.get("/Clientes/:id", async (req, res) => {
 
 // POST - Inserir cliente
 app.post("/Clientes", async (req, res) => {
-  const cliente = req.body;
-  await dbCliente.inserirCliente(cliente);
-  res.send(" Cliente inserido com sucesso!");
+    const cliente = req.body;
+
+    // Chama a função nova do db.js
+    const resultado = await dbCliente.inserirCliente(cliente);
+
+    if (resultado.erro) {
+        // Se deu erro (ex: CPF já existe), retorna erro 400
+        res.status(400).json(resultado);
+    } else {
+        // Se deu certo, retorna sucesso 201 (Created)
+        res.status(201).json({ 
+            sucesso: true, 
+            mensagem: "Cliente inserido com sucesso!" 
+        });
+    }
+});
+
+// POST - Verificar email e senha para login
+app.post("/Clientes/VerificaLogin", async (req, res) => {
+  const emailRecebido = req.body.email;
+  const senhaRecebida = req.body.senha;
+
+  const resultadoConsulta = await dbCliente.verificaLogin(emailRecebido, senhaRecebida);
+  if (resultadoConsulta.length <= 0) {
+    // LOGIN FALHOU
+    res.json({ 
+        sucesso: false, // Envie um status de sucesso/falha
+        mensagem: "Email ou senha incorretos. Caso não exista o registro desse login, será necessário realizar o cadastro."
+    });
+  } else {
+    // LOGIN COM SUCESSO!
+    const usuario = resultadoConsulta[0]; // Pega o primeiro usuário encontrado
+    
+    await dbAcesso.insereAcesso({
+        cliente_id: usuario.id
+    });
+
+    // NUNCA envie a senha de volta para o front-end
+    const usuarioParaEnviar = {
+        id: usuario.id, // (ou qualquer ID que você tenha)
+        nome: usuario.nome_completo,
+        email: usuario.email
+    };
+
+    res.json({ 
+        sucesso: true, 
+        usuario: usuarioParaEnviar // Envia os dados do usuário
+    });
+  }
 });
 
 // PUT - Atualizar cliente

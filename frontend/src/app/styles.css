@@ -1,8 +1,37 @@
 /* globals */
-:root{--bg:#2b0000;--panel:#1a0000;--accent:#f4b400}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background-color:var(--bg);color:#fff}
+:root {
+    --bg: #2b0000;
+    --panel: #1a0000;
+    --accent: #f4b400;
+}
+
+/* --- CORREÇÃO DAS BARRAS BRANCAS --- */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;      /* Remove margem padrão do navegador */
+    padding: 0;     /* Remove preenchimento padrão */
+    width: 100%;    /* Garante largura total */
+    min-height: 100%; /* Garante altura total */
+    
+    /* Configurações visuais */
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--bg);
+    color: #fff;
+    
+    /* Importante para evitar scroll lateral indesejado */
+    overflow-x: hidden; 
+}
+/* ---------------------------------------- */
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
 a{text-decoration:none;color:inherit}
-/* 
+
 /* Navbar 
 .navbar{
     background-color:#400000;
@@ -51,6 +80,7 @@ a{text-decoration:none;color:inherit}
 }
 
 .navbar button:hover{background-color:#b71c1c} */
+
 
 /* Banner */
 .banner {

@@ -1,0 +1,78 @@
+/* Container principal */
+.container {
+  width: 450px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #4A081A; /* vinho escuro */
+  border-radius: 12px;
+  border: 2px solid #D4AF37; /* dourado */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+  color: #f8f8f8;
+}
+
+/* Título */
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 26px;
+  color: #D4AF37; /* dourado */
+  letter-spacing: 1px;
+  border-bottom: 1px solid #D4AF37;
+  padding-bottom: 8px;
+}
+
+/* Cada campo */
+.formGroup {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Texto dos labels */
+.label {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #D4AF37;
+}
+
+/* Inputs e selects */
+.input,
+.select {
+  padding: 12px;
+  background: #6A0D24; /* vinho forte */
+  border: 1px solid #D4AF37;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #f8f8f8;
+  transition: 0.2s;
+}
+
+/* Hover e foco */
+.input:focus,
+.select:focus {
+  border-color: #f8e39a;
+  box-shadow: 0 0 6px #D4AF37;
+  outline: none;
+}
+
+/* Botão */
+.button {
+  width: 100%;
+  padding: 14px;
+  background: #D4AF37; /* dourado */
+  color: #4A081A; /* vinho */
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  transition: 0.25s;
+}
+
+/* Hover do botão */
+.button:hover {
+  background: #f7d76c;
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+}
