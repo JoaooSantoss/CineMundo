@@ -1,89 +1,89 @@
-import Navbar from "../../components/Navbar";
+"use client";
+
+import { useEffect, useState } from "react";
 import "./pedidos.css";
+import Navbar from "../../components/Navbar";
 
 export default function Pedidos() {
-  const pedidos = [
-    {
-      numero: 12345,
-      itens: [
-        {
-          filme: "MINECRAFT",
-          data: "30/05/2025",
-          hora: "20:00",
-          valorIngresso: "R$ 30,00",
-          quantidade: 2,
-          total: "R$ 60,00",
-        },
-      ],
-    },
-    {
-      numero: 12346,
-      itens: [
-        {
-          filme: "THE-CHOSEN",
-          data: "02/06/2025",
-          hora: "18:00",
-          valorIngresso: "R$ 28,00",
-          quantidade: 3,
-          total: "R$ 84,00",
-        },
-      ],
-    },
-    {
-      numero: 12347,
-      itens: [
-        {
-          filme: "O MACACO",
-          data: "10/06/2025",
-          hora: "18:45",
-          valorIngresso: "R$ 35,00",
-          quantidade: 2,
-          total: "R$ 70,00",
-        },
-      ],
-    },
-  ];
+  const [pedidos, setPedidos] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  const clienteId = 2;
+
+  useEffect(() => {
+    async function carregarPedidos() {
+      try {
+        const resposta = await fetch(`http://localhost:3001/Pedidos/${clienteId}`);
+        const dados = await resposta.json();
+        setPedidos(dados);
+      } catch (erro) {
+        console.error("Erro ao buscar pedidos:", erro);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarPedidos();
+  }, []);
 
   return (
-    <main>
-      <Navbar />
+ <main>
+    <Navbar />
+    <div className="pedidos-container">
 
-      <div className="pedidos-container">
-        <h1 className="pedidos-title">🔍 Consulta de Pedidos</h1>
+      <h1>🔍 Consulta de Pedidos</h1>
 
-        <p className="usuario">👤 Olá João da Silva</p>
+      {carregando && <p className="loading">Carregando pedidos...</p>}
 
-        {pedidos.map((pedido) => (
-          <div key={pedido.numero} className="pedido-box">
-            <h2 className="pedido-numero">Pedido nº {pedido.numero}</h2>
+      {!carregando && pedidos.length === 0 && (
+        <p className="sem-pedidos">Nenhum pedido encontrado.</p>
+      )}
 
-            <table className="tabela-pedido">
-              <thead>
-                <tr>
-                  <th>Filme</th>
-                  <th>Data da Sessão</th>
-                  <th>Hora</th>
-                  <th>Valor do Ingresso</th>
-                  <th>Quantidade</th>
-                  <th>Valor Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pedido.itens.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.filme}</td>
-                    <td>{item.data}</td>
-                    <td>{item.hora}</td>
-                    <td>{item.valorIngresso}</td>
-                    <td>{item.quantidade}</td>
-                    <td>{item.total}</td>
+      {pedidos.length > 0 && (
+        <div className="lista-pedidos">
+
+          {pedidos.map((p, index) => (
+            <div key={index}>
+
+              {/* Título do pedido */}
+              <div className="titulo-pedido">
+                Pedido nº {p.numero}
+              </div>
+
+              {/* Tabela */}
+              <table className="tabela-pedido">
+                <thead>
+                  <tr>
+                    <th>Filme</th>
+                    <th>Data da Sessão</th>
+                    <th>Hora</th>
+                    <th>Valor do Ingresso</th>
+                    <th>Quantidade</th>
+                    <th>Valor Total</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ))}
-      </div>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>{p.filme}</td>
+                    <td>{p.data_sessao}</td>
+                    <td>{p.horario}</td>
+                    <td>R$ {p.valor_ingresso}</td>
+                    <td>{p.quantidade}</td>
+                    <td>R$ {p.total}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              {/* Separador vinho */}
+              <div className="pedido-separador"></div>
+
+            </div>
+          ))}
+
+        </div>
+      )}
+    </div>
     </main>
   );
 }

@@ -25,11 +25,21 @@ conectaBD();
 
 // Mostrar todos os filmes cadastrados
 async function selecionaTodosFilmes() {
-  const resultados = await mssql.query("SELECT * FROM FILME");
-  console.log(" Dados da Tabela FILME:");
-  console.log(resultados.recordset);
+  const resultados = await mssql.query(`
+    SELECT 
+      F.id,
+      F.titulo,
+      F.sinopse,
+      F.duracao,
+      F.poster,
+      G.descricao AS genero_nome
+    FROM FILME F
+    JOIN GENERO G ON G.id = F.genero_id
+  `);
+
   return resultados.recordset;
 }
+
 
 // Mostrar um filme específico
 async function listaFilmeEspecifico(id) {

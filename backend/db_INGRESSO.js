@@ -112,10 +112,39 @@ async function excluirIngresso(id) {
   }
 }
 
+async function listarPedidosCompleto(clienteId) {
+  try {
+    const request = new mssql.Request();
+    request.input("clienteId", mssql.Int, clienteId);
+
+    const result = await request.query(`
+      SELECT  
+          I.numero,
+          F.titulo AS filme,
+          CONVERT(VARCHAR(10), S.data, 103) AS data_sessao,
+          FORMAT(S.horario_inicial, 'HH:mm') AS horario,
+          S.preco AS preco,
+          1 AS quantidade,
+          (S.preco * 1) AS total
+      FROM INGRESSO I
+      JOIN SESSAO S ON I.sessao_id = S.id
+      JOIN FILME F ON S.filme_id = F.id
+      WHERE I.cliente_id = @clienteId
+    `);
+
+    return result.recordset;
+
+  } catch (err) {
+    console.error("Erro ao listar pedidos completos:", err.message);
+    throw err;
+  }
+}
+
 module.exports = {
   inserirIngresso,
   buscarIngressoPorId,
   listarIngressos,
   AtualizarIngresso,
-  excluirIngresso
+  excluirIngresso,
+  listarPedidosCompleto
 };

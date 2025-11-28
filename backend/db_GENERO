@@ -26,9 +26,7 @@ conectaBD();
 
 // Mostrar todos os gêneros cadastrados
 async function selecionaTodosGenero() {
-  const resultados = await mssql.query("SELECT * FROM GENERO");
-  console.log(" Dados da Tabela GENERO:");
-  console.log(resultados.recordset);
+  const resultados = await mssql.query("SELECT * FROM GENERO ORDER BY descricao");
   return resultados.recordset;
 }
 

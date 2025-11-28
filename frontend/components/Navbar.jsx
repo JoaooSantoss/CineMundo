@@ -1,3 +1,4 @@
+import '../components/CSS/Navbar.css'
 export default function Navbar() {
   return (
     <nav className="navbar">
@@ -6,11 +7,9 @@ export default function Navbar() {
       </div>
        {/* <div className="navbar-nome">CineMundo</div>  */}
       <div className="navbar-links">
-        <a href="/">Home</a>
-        <a href="#">Programação</a>
-        <a href="#">Parcerias</a>
-        <a href="/pedidos">Pedidos</a>
-        <a href="/cartaz">Cartaz</a>
+        <a href="/">HOME</a>
+        <a href="/pedidos">INGRESSOS</a>
+        <a href="/cartaz">FILMES</a>
       </div>
       <div className="navbar-actions">
         <select>

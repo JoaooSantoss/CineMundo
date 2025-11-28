@@ -23,42 +23,61 @@ app.use(express.json());
 // ========================
 // FILME - ENDPOINTS
 // ========================
-
 // GET - Todos os filmes
 app.get("/Filmes", async (req, res) => {
-  const filmes = await dbFilme.selecionaTodosFilmes();
-  res.json(filmes);
+  try {
+    const filmes = await dbFilme.selecionaTodosFilmes();
+    res.json(filmes);
+  } catch (err) {
+    console.error("Erro ao buscar filmes:", err);
+    res.status(500).json({ erro: "Erro ao buscar filmes" });
+  }
 });
 
 // GET - Filme por ID
 app.get("/Filmes/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const filme = await dbFilme.listaFilmeEspecifico(id);
-  res.json(filme);
+  try {
+    const id = parseInt(req.params.id);
+    const filme = await dbFilme.listaFilmeEspecifico(id);
+    res.json(filme);
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao buscar filme por ID" });
+  }
 });
 
 // POST - Inserir filme
 app.post("/Filmes", async (req, res) => {
-  const filme = req.body;
-  await dbFilme.insereFilme(filme);
-  res.send(" Filme inserido com sucesso!");
+  try {
+    const filme = req.body;
+    await dbFilme.insereFilme(filme);
+    res.send("Filme inserido com sucesso!");
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao inserir filme" });
+  }
 });
 
 // PUT - Atualizar filme
 app.put("/Filmes/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const filme = req.body;
-  await dbFilme.atualizaFilme(id, filme);
-  res.send(" Filme atualizado com sucesso!");
+  try {
+    const id = parseInt(req.params.id);
+    const filme = req.body;
+    await dbFilme.atualizaFilme(id, filme);
+    res.send("Filme atualizado com sucesso!");
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao atualizar filme" });
+  }
 });
 
 // DELETE - Apagar filme
 app.delete("/Filmes/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  await dbFilme.apagaFilme(id);
-  res.send(" Filme deletado com sucesso!");
+  try {
+    const id = parseInt(req.params.id);
+    await dbFilme.apagaFilme(id);
+    res.send("Filme deletado com sucesso!");
+  } catch (err) {
+    res.status(500).json({ erro: "Erro ao deletar filme" });
+  }
 });
-
 
 
 
@@ -261,19 +280,25 @@ app.post("/Ingressos", async (req, res) => {
 });
 
 // PUT - Atualizar ingresso
-app.put("/Sessao/:id", async (req, res) => {
+app.put("/Ingressos/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   const ingresso = req.body;
-  await dbIngresso.AtualizarIngresso(id, sessao);
-  res.send(" Sessao atualizada com sucesso!");
+  await dbIngresso.AtualizarIngresso(id, ingresso);
+  res.send("Ingresso atualizado com sucesso!");
 });
-
 
 // DELETE - Remover ingresso
 app.delete("/Ingressos/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   await dbIngresso.excluirIngresso(id);
   res.send("Ingresso deletado com sucesso!");
+});
+
+// GET - LISTAR PEDIDOS COMPLETOS DO CLIENTE
+app.get("/Pedidos/:clienteId", async (req, res) => {
+  const clienteId = parseInt(req.params.clienteId);
+  const pedidos = await dbIngresso.listarPedidosCompleto(clienteId);
+  res.json(pedidos);
 });
 
 
